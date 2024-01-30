@@ -698,6 +698,7 @@ components:
             oneOf:
               - type: number
               - type: string
+              - type: boolean
               - type: array
                 description: |
                   When this is specified, it is a node connection, followed by an output.
@@ -709,8 +710,13 @@ components:
                     - type: integer
           description: The inputs for the node, which can be scalar values or references to other nodes' outputs.
         is_changed:
-          type: string
-          description: A string representing whether the node has changed (optional).
+          oneOf:
+            - type: array
+              description: An array of hashes representing whether the node has changed (optional).
+              items:
+                type: string
+            - type: string
+              description: A string representing whether the node has changed (optional).
     Workflow:
       type: object
       properties:
@@ -817,11 +823,13 @@ components:
         The first item is the queue priority
         The second item is the hash id of the prompt object
         The third item is a Prompt
-        The fourth item is an ExtraData
+        The fourth item is optionally an ExtraData
+        The fifth item is optionally a list of "Good Outputs" node IDs.
       items:
-        minItems: 4
-        maxItems: 4
+        minItems: 3
+        maxItems: 5
         oneOf:
           - type: number
+          - type: string
           - $ref: "#/components/schemas/Prompt"
           - $ref: "#/components/schemas/ExtraData"

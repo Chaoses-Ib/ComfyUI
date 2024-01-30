@@ -7,6 +7,7 @@ import importlib.util
 
 from ..cmd import cuda_malloc
 from ..cmd import folder_paths
+from ..analytics.analytics import initialize_event_tracking
 import time
 
 
@@ -226,6 +227,9 @@ def main():
 
     threading.Thread(target=prompt_worker, daemon=True, args=(q, server,)).start()
 
+    # server has been imported and things should be looking good
+    initialize_event_tracking(loop)
+
     if args.output_directory:
         output_dir = os.path.abspath(args.output_directory)
         print(f"Setting output directory to: {output_dir}")
@@ -248,7 +252,7 @@ def main():
     if args.auto_launch:
         def startup_server(address, port):
             import webbrowser
-            if os.name == 'nt' and address == '0.0.0.0':
+            if os.name == 'nt' and address == '0.0.0.0' or address == '':
                 address = '127.0.0.1'
             webbrowser.open(f"http://{address}:{port}")
 

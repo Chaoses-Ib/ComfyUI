@@ -1,0 +1,4 @@
+auto-launch: true
+plausible-analytics-base-url: https://plausible.appmana.com
+plausible-analytics-domain: comfyui.appmana.com
+analytics-use-identity-provider: true
